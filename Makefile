@@ -1,10 +1,17 @@
 start:
-	docker compose -f docker/docker-compose.yml up -d --build
+	docker compose up -d --build
 
 stop:
-	docker compose -f docker/docker-compose.yml down
+	docker compose down
 
 shell:
-	docker compose -f docker/docker-compose.yml exec -it app bash
+	docker compose exec -it app bash
 
-.PHONY: start stop
+logs:
+	docker compose logs -f
+
+queues_start:
+	docker compose exec app supervisorctl start laravel-worker:*
+
+queues_stop:
+	docker compose exec app supervisorctl stop laravel-worker:*
